@@ -1,6 +1,16 @@
+/*
+* 這個build檔是由Gradle的 `init` 任務生成的。
+*
+* 更多關於在Gradle中構建Java專案的資訊可以查看Gradle使用者文檔中的
+* Java專案快速啟動章節
+* https://docs.gradle.org/3.3/userguide/tutorial_java_projects.html
+*/
+// 在這個段落中你可以聲明你的build腳本需要的依賴和解析下載該依賴所使用的倉儲位置
+
 buildscript {
 	ext {
 		springBootVersion = '2.0.1.BUILD-SNAPSHOT'
+		jjwtVersion = '0.9.0'
 	}
 	repositories {
 		mavenCentral()
@@ -12,6 +22,13 @@ buildscript {
 	}
 }
 
+/*
+* 在這個段落中你可以聲明使用哪些外掛程式
+* apply plugin: 'java' 代表這是一個Java專案，需要使用java外掛程式
+* 如果想生成一個 `Intellij IDEA` 的工程，類似的如果要生成
+* eclipse工程，就寫 apply plugin: 'eclipse'
+* 同樣的我們要學的是Spring Boot，所以應用Spring Boot外掛程式
+*/
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -19,16 +36,20 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.polinwei'
 version = '0.0.1-SNAPSHOT'
+
+// 在這個段落中你可以聲明原始檔案和目標編譯後的Java版本相容性
 sourceCompatibility = 1.8
 
+// 在這個段落中你可以聲明在哪裡可以找到你的項目依賴
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
 	maven { url "https://code.lds.org/nexus/content/groups/main-repo"}
+	maven { url "http://maven.aliyun.com/nexus/content/repositories/central"}
 }
 
-
+// 在這個段落你可以聲明你的專案的開發和測試所需的依賴類庫
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
@@ -38,5 +59,7 @@ dependencies {
 	compile('com.oracle:ojdbc7:12.1.0.1')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')
+	compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
+	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
