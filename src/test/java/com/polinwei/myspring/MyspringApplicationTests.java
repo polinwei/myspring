@@ -3,6 +3,8 @@ package com.polinwei.myspring;
 import com.polinwei.myspring.db.maria.dao.BankAccountDao;
 import com.polinwei.myspring.db.maria.model.BankAccount;
 import com.polinwei.myspring.db.maria.service.BankAccountService;
+import com.polinwei.myspring.db.mongo.dao.UserDao;
+import com.polinwei.myspring.db.mongo.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,8 @@ public class MyspringApplicationTests {
 	private BankAccountService bankAccountService;
 	@Autowired
 	private BankAccountDao bankAccountDao;
+	@Autowired
+	private UserDao userDao;
 
 	@Test
 	public void contextLoads() {
@@ -49,4 +53,9 @@ public class MyspringApplicationTests {
 		Assert.assertEquals(3,bankAccountDao.count());
 	}
 
+	@Test
+	public void mongoDbTest() {
+		userDao.save(new User("polin.wei"));
+
+	}
 }
