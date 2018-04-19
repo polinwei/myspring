@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MyspringApplicationTests {
+	private final static Logger logger = LoggerFactory.getLogger(MyspringApplicationTests.class);
 
 	@Autowired
 	private BankAccountService bankAccountService;
@@ -35,6 +38,7 @@ public class MyspringApplicationTests {
 	@Before
 	public void setUp() throws Exception {
 		bankAccountDao.deleteAll();
+		userDao.deleteAll();
 	}
 
 	/**
@@ -55,7 +59,16 @@ public class MyspringApplicationTests {
 
 	@Test
 	public void mongoDbTest() {
+		// save a couple of users
 		userDao.save(new User("polin.wei"));
+		userDao.save(new User("jamie.laio"));
 
+		//fetch all users
+		logger.info("Users find with findAll");
+		for (User user: userDao.findAll()) {
+			logger.info(user.toString());
+		}
+		//fetch an individual user
+		logger.info(userDao.findByUsername("polin.wei").toString());
 	}
 }
