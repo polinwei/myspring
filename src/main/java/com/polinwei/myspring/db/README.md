@@ -18,22 +18,25 @@ step 03: crate admin user
         roles: [{ role: "root", db: "admin" }]
     })`
 
-Add Normal admin & user in Test Database: test
+Add Normal admin & user in Test Database: my_mongo
 -----------------------------------------------
-**資料庫名稱叫做test，新增一個testAdmin的帳號，有讀取/寫入的權限，以及testUser的帳號，僅有唯讀的權限**
+**資料庫名稱叫做my_mongo，新增一個 admin 的帳號，有讀取/寫入的權限，以及 jack 的帳號，僅有唯讀的權限**
 
-Step 01: Connect Database: test
-`use test`
+Step 01: Connect Database: my_mongo
+`use my_mongo`
 
 Step 02: 
 `db.createUser({
-    user: "testAdmin",
+    user: "admin",
     pwd: "PASSWORD",
-    roles: [{ role: "readWrite", db: "test" }]
+    roles: [{ role: "readWrite", db: "my_mongo" }]
 })`
 
-Step 03:
-
+db.createUser({
+    user: "jack",
+    pwd: "PASSWORD",
+    roles: [{ role: "read", db: "my_mongo" }]
+})
 
 **帳號建立好之後，就重新啟動mongod，並加入--auth參數，表示要啟用帳號認證機制**
 `mongod --auth --dbpath=YOURDBPATH --logpath=YOURLOGFILEPATH`

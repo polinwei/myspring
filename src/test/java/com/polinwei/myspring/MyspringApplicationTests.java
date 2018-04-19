@@ -3,6 +3,7 @@ package com.polinwei.myspring;
 import com.polinwei.myspring.db.maria.dao.BankAccountDao;
 import com.polinwei.myspring.db.maria.model.BankAccount;
 import com.polinwei.myspring.db.maria.service.BankAccountService;
+import com.polinwei.myspring.db.mongo.auth.dao.UserAuthDao;
 import com.polinwei.myspring.db.mongo.dao.UserDao;
 import com.polinwei.myspring.db.mongo.model.User;
 import org.junit.Assert;
@@ -26,6 +27,8 @@ public class MyspringApplicationTests {
 	private BankAccountDao bankAccountDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private UserAuthDao userAuthDao;
 
 	@Test
 	public void contextLoads() {
@@ -37,8 +40,8 @@ public class MyspringApplicationTests {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		bankAccountDao.deleteAll();
-		userDao.deleteAll();
+		//bankAccountDao.deleteAll();
+		//userDao.deleteAll();
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class MyspringApplicationTests {
 	public void mongoDbTest() {
 		// save a couple of users
 		userDao.save(new User("polin.wei"));
-		userDao.save(new User("jamie.laio"));
+		userDao.save(new User("jamie.liao"));
 
 		//fetch all users
 		logger.info("Users find with findAll");
@@ -70,5 +73,18 @@ public class MyspringApplicationTests {
 		}
 		//fetch an individual user
 		logger.info(userDao.findByUsername("polin.wei").toString());
+	}
+
+	@Test
+	public void mongoDbAuthTest() {
+		// save a couple of users
+		userAuthDao.save(new User("auth.polin"));
+		userAuthDao.save(new User("auth.liao"));
+
+		//fetch all users
+		logger.info("Users find with findAll");
+		for (User user: userAuthDao.findAll()){
+			logger.info(user.toString());
+		}
 	}
 }
