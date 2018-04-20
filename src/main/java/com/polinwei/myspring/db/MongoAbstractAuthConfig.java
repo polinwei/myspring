@@ -9,9 +9,6 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 public abstract class MongoAbstractAuthConfig {
 

@@ -40,8 +40,8 @@ public class MyspringApplicationTests {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		//bankAccountDao.deleteAll();
-		//userDao.deleteAll();
+		bankAccountDao.deleteAll();
+		userDao.deleteAll();
 	}
 
 	/**
