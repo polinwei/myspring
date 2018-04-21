@@ -64,4 +64,13 @@ public class BankAccount {
 
         return Objects.hash(id, balance, fullName);
     }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 }

@@ -24,7 +24,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "emfOracle",
-        //transactionManagerRef = "tmOracle",
+        transactionManagerRef = "tmOracle",
         basePackages = {"com.polinwei.myspring.db.oracle.dao"}
 )
 public class DbOracleConfig {
@@ -50,6 +50,13 @@ public class DbOracleConfig {
         factoryBean.setPersistenceUnitName("puOracle");
 
         return factoryBean;
+    }
+
+    @Bean(name = "tmOracle") // Primary 一定要預設用 transactionManager
+    public PlatformTransactionManager transactionManager(
+            @Qualifier("emfOracle") EntityManagerFactory entityManagerFactory) {
+
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
     private Properties hibernateProperties() {

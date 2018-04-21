@@ -6,6 +6,8 @@ import com.polinwei.myspring.db.maria.service.BankAccountService;
 import com.polinwei.myspring.db.mongo.auth.dao.UserAuthDao;
 import com.polinwei.myspring.db.mongo.dao.UserDao;
 import com.polinwei.myspring.db.mongo.model.User;
+import com.polinwei.myspring.db.oracle.dao.SalaryAccountDao;
+import com.polinwei.myspring.db.oracle.model.SalaryAccount;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +31,8 @@ public class MyspringApplicationTests {
 	private UserDao userDao;
 	@Autowired
 	private UserAuthDao userAuthDao;
+	@Autowired
+	private SalaryAccountDao salaryAccountDao;
 
 	@Test
 	public void contextLoads() {
@@ -42,6 +46,7 @@ public class MyspringApplicationTests {
 	public void setUp() throws Exception {
 		bankAccountDao.deleteAll();
 		userDao.deleteAll();
+		salaryAccountDao.deleteAll();
 	}
 
 	/**
@@ -56,6 +61,10 @@ public class MyspringApplicationTests {
 		bankAccountDao.save(bk);
 		bk = new BankAccount(3L, 3000, "Donald");
 		bankAccountDao.save(bk);
+
+		for (BankAccount bankAccount: bankAccountDao.findAll() ) {
+			logger.info(bankAccount.toString());
+		}
 
 		Assert.assertEquals(3,bankAccountDao.count());
 	}
@@ -85,6 +94,16 @@ public class MyspringApplicationTests {
 		logger.info("Users find with findAll");
 		for (User user: userAuthDao.findAll()){
 			logger.info(user.toString());
+		}
+	}
+
+	@Test
+	public void oracleDbSalaryTest() {
+		salaryAccountDao.save(new SalaryAccount(1,"Tom","HR",45000));
+		salaryAccountDao.save(new SalaryAccount(2,"Jack","RD",55000));
+		salaryAccountDao.save(new SalaryAccount(3,"Jill","SALES",65000));
+		for (SalaryAccount sa: salaryAccountDao.findAll() ) {
+			logger.info(sa.toString());
 		}
 	}
 }
