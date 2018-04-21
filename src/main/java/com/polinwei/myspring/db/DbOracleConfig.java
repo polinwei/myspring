@@ -52,7 +52,7 @@ public class DbOracleConfig {
         return factoryBean;
     }
 
-    @Bean(name = "tmOracle") // Primary 一定要預設用 transactionManager
+    @Bean(name = "tmOracle")
     public PlatformTransactionManager transactionManager(
             @Qualifier("emfOracle") EntityManagerFactory entityManagerFactory) {
 

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank</title>
+
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="demo/oracle/_menu"></th:block>
+
+<h2>Salary Accounts</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>DEPT Name</th>
+        <th>Salary</th>
+    </tr>
+    <tr th:each="salaryInfo : ${salaryInfos}">
+        <td th:utext="${salaryInfo.id}">..</td>
+        <td th:utext="${salaryInfo.fullName}">..</td>
+        <td th:utext="${salaryInfo.deptName}">..</td>
+        <td th:utext="${salaryInfo.salary}">..</td>
+    </tr>
+
+</table>
+</body>
+</html>
