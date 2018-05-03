@@ -13,11 +13,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -37,6 +39,21 @@ public class DbMariaConfig {
 
     @Primary
     @Bean(name = "entityManagerFactory") // Primary 一定要預設用 entityManagerFactory
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+
+        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setDataSource(dataSource());
+        factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+        factoryBean.setJpaProperties(hibernateProperties());
+
+        factoryBean.setPackagesToScan("com.polinwei.myspring.db.maria.model");
+        factoryBean.setPersistenceUnitName("puMaria");
+
+        return factoryBean;
+    }
+    /*
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             EntityManagerFactoryBuilder builder,
             @Qualifier("dsMaria") DataSource dataSource) {
@@ -46,6 +63,7 @@ public class DbMariaConfig {
                 .persistenceUnit("puMaria")
                 .build();
     }
+    */
 
     @Primary
     @Bean(name = "transactionManager") // Primary 一定要預設用 transactionManager
@@ -53,6 +71,13 @@ public class DbMariaConfig {
             @Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
 
         return new JpaTransactionManager(entityManagerFactory);
+    }
+
+    private Properties hibernateProperties() {
+        final Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        return hibernateProperties;
     }
 
 }
