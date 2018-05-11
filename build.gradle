@@ -65,6 +65,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web-services')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('com.oracle:ojdbc7:12.1.0.1')
+	compile('com.h2database:h2')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')
 	compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
