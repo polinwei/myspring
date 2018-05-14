@@ -7,12 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -35,14 +30,7 @@ public class DbH2Config {
 
     @Bean(name = "dsH2")
     @ConfigurationProperties(prefix = "dbh2.datasource")
-    public DataSource dataSource() {
-//        DataSource dataSource = DataSourceBuilder.create().build();
-//        Resource initData = new ClassPathResource("data-h2.sql");
-//        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(initData);
-//        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
-//        return dataSource;
-        return DataSourceBuilder.create().build();
-    }
+    public DataSource dataSource() { return DataSourceBuilder.create().build(); }
 
     @Bean(name = "emfH2")
     public LocalContainerEntityManagerFactoryBean emfH2() {
