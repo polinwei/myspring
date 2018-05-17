@@ -66,6 +66,8 @@ public class JwtTokenUtilTest {
         when(clockMock.now()).thenReturn(DateUtil.now());
 
         final String token = createToken();
+        logger.info(token);
+        logger.info(jwtTokenUtil.getUsernameFromToken(token));
 
         assertThat(jwtTokenUtil.getUsernameFromToken(token)).isEqualTo(TEST_USERNAME);
     }
@@ -76,6 +78,8 @@ public class JwtTokenUtilTest {
         when(clockMock.now()).thenReturn(now);
 
         final String token = createToken();
+        logger.info(token);
+        logger.info(jwtTokenUtil.getIssuedAtDateFromToken(token).toString());
 
         assertThat(jwtTokenUtil.getIssuedAtDateFromToken(token)).isInSameMinuteWindowAs(now);
     }
@@ -87,6 +91,10 @@ public class JwtTokenUtilTest {
         final String token = createToken();
 
         final Date expirationDateFromToken = jwtTokenUtil.getExpirationDateFromToken(token);
+
+        logger.info(token);
+        logger.info(now.toString());
+        logger.info(expirationDateFromToken.toString());
         assertThat(DateUtil.timeDifference(expirationDateFromToken, now)).isCloseTo(3600000L, within(1000L));
     }
 
