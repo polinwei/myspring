@@ -1,8 +1,11 @@
 package com.polinwei.myspring.controller.authentication.jwt;
 
+import com.polinwei.myspring.authentication.jwt.model.Authority;
+import com.polinwei.myspring.authentication.jwt.model.User;
 import com.polinwei.myspring.authentication.jwt.security.JwtAuthenticationRequest;
 import com.polinwei.myspring.authentication.jwt.security.JwtTokenUtil;
 import com.polinwei.myspring.authentication.jwt.security.JwtUser;
+import com.polinwei.myspring.authentication.jwt.security.dao.UserRepository;
 import com.polinwei.myspring.authentication.jwt.service.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,9 +18,14 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import static java.util.Arrays.asList;
+
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -35,6 +43,30 @@ public class AuthenticationRestController {
     @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private  UserRepository userRepository;
+
+    @RequestMapping(value = "${jwt.route.authentication.register}", method = RequestMethod.POST)
+    public ResponseEntity<?> addAuthenticationUser(@RequestBody JwtAuthenticationRequest authenticationRequest){
+        User user = (User) userRepository.findByUsername(authenticationRequest.getUsername());
+        if (user != null){
+            return null;
+        }
+        user = new User();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setUsername(authenticationRequest.getUsername());
+        user.setPassword(encoder.encode(authenticationRequest.getPassword()));
+        user.setFirstname(authenticationRequest.getUsername());
+        user.setLastname(authenticationRequest.getUsername());
+        user.setEmail(authenticationRequest.getUsername()+"@gmail.com");
+        user.setEnabled(true);
+        user.setLastPasswordResetDate(new Date());
+
+       userRepository.save(user);
+       return createAuthenticationToken(authenticationRequest);
+
+    }
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {

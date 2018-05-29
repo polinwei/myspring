@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
 
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/**","/register/**").permitAll()
 
                 // demo
                 .antMatchers("/", "/home","/demo/**").permitAll()
@@ -96,20 +96,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // AuthenticationTokenFilter will ignore the below paths
         web
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                )
+            .ignoring()
+            .antMatchers(
+                    HttpMethod.POST,
+                    authenticationPath
+            )
 
-                // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
-                .and()
-                .ignoring()
-                .antMatchers("/h2-console/**/**");
+            // allow anonymous resource requests
+            .and()
+            .ignoring()
+            .antMatchers(
+                    HttpMethod.GET,
+                    "/",
+                    "/*.html",
+                    "/favicon.ico",
+                    "/**/*.html",
+                    "/**/*.css",
+                    "/**/*.js"
+            )
+
+            // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+            .and()
+            .ignoring()
+            .antMatchers("/h2-console/**/**");
     }
 }
