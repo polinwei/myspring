@@ -1,6 +1,7 @@
 package com.polinwei.myspring.controller.authentication.jwt;
 
 import com.polinwei.myspring.authentication.jwt.model.Authority;
+import com.polinwei.myspring.authentication.jwt.model.AuthorityName;
 import com.polinwei.myspring.authentication.jwt.model.User;
 import com.polinwei.myspring.authentication.jwt.security.JwtAuthenticationRequest;
 import com.polinwei.myspring.authentication.jwt.security.JwtTokenUtil;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import static java.util.Arrays.asList;
 
@@ -53,6 +55,11 @@ public class AuthenticationRestController {
         if (user != null){
             return null;
         }
+        Authority authority = new Authority();
+        authority.setId(1L);
+        authority.setName(AuthorityName.ROLE_ADMIN);
+        List<Authority> authorities = Arrays.asList(authority);
+
         user = new User();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setUsername(authenticationRequest.getUsername());
@@ -61,7 +68,8 @@ public class AuthenticationRestController {
         user.setLastname(authenticationRequest.getUsername());
         user.setEmail(authenticationRequest.getUsername()+"@gmail.com");
         user.setEnabled(true);
-        user.setLastPasswordResetDate(new Date());
+        user.setLastPasswordResetDate(new Date(System.currentTimeMillis() + 1000 * 1000));
+        //user.setAuthorities(authorities);
 
        userRepository.save(user);
        return createAuthenticationToken(authenticationRequest);
