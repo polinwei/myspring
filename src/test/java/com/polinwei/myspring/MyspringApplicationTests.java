@@ -3,11 +3,6 @@ package com.polinwei.myspring;
 import com.polinwei.myspring.db.maria.dao.BankAccountDao;
 import com.polinwei.myspring.db.maria.model.BankAccount;
 import com.polinwei.myspring.db.maria.service.BankAccountService;
-import com.polinwei.myspring.db.mongo.auth.dao.UserAuthDao;
-import com.polinwei.myspring.db.mongo.dao.UserDao;
-import com.polinwei.myspring.db.mongo.model.User;
-import com.polinwei.myspring.db.oracle.dao.SalaryAccountDao;
-import com.polinwei.myspring.db.oracle.model.SalaryAccount;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,12 +22,6 @@ public class MyspringApplicationTests {
 	private BankAccountService bankAccountService;
 	@Autowired
 	private BankAccountDao bankAccountDao;
-	@Autowired
-	private UserDao userDao;
-	@Autowired
-	private UserAuthDao userAuthDao;
-	@Autowired
-	private SalaryAccountDao salaryAccountDao;
 
 	@Test
 	public void contextLoads() {
@@ -45,8 +34,6 @@ public class MyspringApplicationTests {
 	@Before
 	public void setUp() throws Exception {
 		bankAccountDao.deleteAll();
-		userDao.deleteAll();
-		salaryAccountDao.deleteAll();
 	}
 
 	/**
@@ -69,41 +56,4 @@ public class MyspringApplicationTests {
 		Assert.assertEquals(3,bankAccountDao.count());
 	}
 
-	@Test
-	public void mongoDbTest() {
-		// save a couple of users
-		userDao.save(new User("polin.wei"));
-		userDao.save(new User("jamie.liao"));
-
-		//fetch all users
-		logger.info("Users find with findAll");
-		for (User user: userDao.findAll()) {
-			logger.info(user.toString());
-		}
-		//fetch an individual user
-		logger.info(userDao.findByUsername("polin.wei").toString());
-	}
-
-	@Test
-	public void mongoDbAuthTest() {
-		// save a couple of users
-		userAuthDao.save(new User("auth.polin"));
-		userAuthDao.save(new User("auth.liao"));
-
-		//fetch all users
-		logger.info("Users find with findAll");
-		for (User user: userAuthDao.findAll()){
-			logger.info(user.toString());
-		}
-	}
-
-	@Test
-	public void oracleDbSalaryTest() {
-		salaryAccountDao.save(new SalaryAccount(1,"Tom","HR",45000));
-		salaryAccountDao.save(new SalaryAccount(2,"Jack","RD",55000));
-		salaryAccountDao.save(new SalaryAccount(3,"Jill","SALES",65000));
-		for (SalaryAccount sa: salaryAccountDao.findAll() ) {
-			logger.info(sa.toString());
-		}
-	}
 }

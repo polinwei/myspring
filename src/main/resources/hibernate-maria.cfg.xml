@@ -6,12 +6,11 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306/my_spring</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="connection.username">root</property>
-    <property name="connection.password">mysql</property>
-    <mapping class="com.polinwei.myspring.db.maria.model.BankAccount"/>
+      <mapping class="com.polinwei.myspring.db.maria.model.BankAccount"/>
+    <mapping class="com.polinwei.myspring.authentication.jwt.model.Authority"/>
+    <mapping class="com.polinwei.myspring.authentication.jwt.model.User"/>
 
-
-    <!-- DB schema will be updated if needed -->
+      <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

@@ -4,8 +4,6 @@ import com.polinwei.myspring.db.maria.dao.BankAccountDao;
 import com.polinwei.myspring.db.maria.model.BankAccount;
 import com.polinwei.myspring.db.maria.model.SendMoneyForm;
 import com.polinwei.myspring.db.maria.service.BankAccountService;
-import com.polinwei.myspring.db.oracle.dao.SalaryAccountDao;
-import com.polinwei.myspring.db.oracle.model.SalaryAccount;
 import com.polinwei.myspring.exception.CommonTransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +22,6 @@ public class BankController {
     private BankAccountDao bankAccountDao;
     @Autowired
     private BankAccountService bankAccountService;
-    @Autowired
-    private SalaryAccountDao salaryAccountDao;
 
 
     @GetMapping(path = "showBankAccounts")
@@ -59,11 +55,6 @@ public class BankController {
         return "redirect:/demo/bank/showBankAccounts";
     }
 
-    @GetMapping(path = "showSalaryAccounts")
-    public String showSalaryAccounts(Model model) {
-        List<SalaryAccount> list = salaryAccountDao.findAll();
-        model.addAttribute("salaryInfos", list);
-        return "demo/oracle/salaryPage";
-    }
+
 
 }
